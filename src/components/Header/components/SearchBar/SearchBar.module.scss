@@ -1,0 +1,19 @@
+.searchContainer {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  max-width: 648px; /* Define uma largura máxima */
+  margin-right: 2rem;
+
+  button {
+    background: none;
+    border: none;
+    margin-left: -35px;
+    cursor: pointer;
+    color: #090129;
+
+    i {
+      font-size: 16px;
+    }
+  }
+}

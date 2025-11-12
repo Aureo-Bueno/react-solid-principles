@@ -1,79 +1,27 @@
-import React, { useState } from "react";
 import Styles from "./Header.module.scss";
-import { LogoIcon } from "../../common/icons/LogoIcon";
-import { CarrinhoIcon } from "../../common/icons/CarrinhoIcon";
-import { PerfilIcon } from "../../common/icons/PerfilIcon";
-import Input from "../Input";
-import { SearchIcon } from "../../common/icons/SearchIcon";
-import { Link } from "react-router-dom";
-import Typography from "../Typography";
-import Button from "../Button";
+import Logo from "./components/Logo";
+import Navigation from "./components/Navigation";
+import SearchBar from "./components/SearchBar";
+import UserActions from "./components/UserActions";
 
 type HeaderProps = {
   cartCount: number;
   onSearch: (query: string) => void;
 };
 
-const Header = ({ cartCount, onSearch }: HeaderProps) => {
-  const [query, setQuery] = useState<string>("");
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setQuery(e.target.value);
-  };
-
-  const handleSearch = (): void => {
-    onSearch(query);
-  };
-
+function Header({ cartCount, onSearch }: HeaderProps) {
   return (
     <header className={Styles.header}>
       <div className={Styles.headerInner}>
-        <div className={Styles.logo}>
-          <Link to="/">
-            <LogoIcon />
-          </Link>
-        </div>
+        <Logo />
         <div className={Styles.options}>
-          <nav className={Styles.nav}>
-            <ul>
-              <li>
-                <a className="body-large-regular" href="/about">
-                  Sobre nós
-                </a>
-              </li>
-            </ul>
-          </nav>
-          <div className={Styles.searchContainer}>
-            <Input
-              variant="secondary"
-              value={query}
-              onChange={handleInputChange}
-              placeholder="O que você procura?"
-            />
-            <Button
-              onClick={handleSearch}
-              style={{ position: "relative", right: "36px" }}
-            >
-              <SearchIcon />
-            </Button>
-          </div>
-          <div className={Styles.userActions}>
-            <a href="#">Login</a>
-            <a href="#">
-              <PerfilIcon />
-            </a>
-            <Link
-              to="/carrinho"
-              style={{ display: "flex", alignItems: "center", gap: "4px" }}
-            >
-              <CarrinhoIcon />
-              <Typography variantStyle="body-small">({cartCount})</Typography>
-            </Link>
-          </div>
+          <Navigation />
+          <SearchBar onSearch={onSearch} />
+          <UserActions cartCount={cartCount} />
         </div>
       </div>
     </header>
   );
-};
+}
 
 export default Header;

@@ -3,9 +3,9 @@ import Styles from "./CartPage.module.css";
 import { useNavigate } from "react-router-dom";
 
 import { Product } from "../../common/types/product";
-import CartItem from "../../components/CartItem";
 import CartEmptyMessage from "../../components/CartEmptyMessage";
 import CartSummary from "../../components/CartSummary";
+import CartItem from "../../components/CartItem";
 
 type CartPageProps = {
   cartItems: Product[];

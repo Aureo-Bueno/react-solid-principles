@@ -25,13 +25,13 @@ type TypographyProps = {
   style?: CSSProperties;
 };
 
-const Typography = ({
+function Typography({
   variant = "p",
   variantStyle,
   children,
   className,
   style,
-}: TypographyProps) => {
+}: TypographyProps) {
   const Tag = variant;
 
   return (
@@ -46,6 +46,6 @@ const Typography = ({
       {children}
     </Tag>
   );
-};
+}
 
 export default Typography;

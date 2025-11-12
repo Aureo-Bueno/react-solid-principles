@@ -64,7 +64,7 @@ function ProductDetail({
               label={color}
               value={color}
               checked={selectedValue === color}
-              onChange={handleRadioChange}
+              onChange={() => handleRadioChange(color)}
             />
           ))}
         </div>

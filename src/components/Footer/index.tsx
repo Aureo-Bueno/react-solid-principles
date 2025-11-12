@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import styles from "./Footer.module.css";
 import FooterSection from "./FooterSection";
 import Divider from "../Divider";

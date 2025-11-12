@@ -1,9 +1,5 @@
-import { InputHTMLAttributes } from "react";
 import Styles from "./Input.module.css";
-
-type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  variant?: "primary" | "secondary";
-};
+import { InputProps } from "./types";
 
 const Input = ({
   variant = "primary",
