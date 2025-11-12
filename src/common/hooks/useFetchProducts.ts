@@ -1,25 +1,21 @@
-import { useEffect, useState } from "react";
-import { Product } from "../types/product";
-import axios from "axios";
 import { PRODUCTS_BASE_URL } from "../constants/endpoints";
+import { Product } from "../types/product";
+import { useFetch } from "./useFetch";
 
-export const useFetchProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+type UseFetchProductsReturn = {
+  products: Product[];
+  isLoading: boolean;
+  error: string | null;
+};
 
-  useEffect(() => {
-    axios
-      .get(PRODUCTS_BASE_URL)
-      .then((response) => {
-        setProducts(response.data.products);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setError("Erro ao carregar produtos.");
-        setIsLoading(false);
-      });
-  }, []);
+export const useFetchProducts = (): UseFetchProductsReturn => {
+  const { data, isLoading, error } = useFetch<{ products: Product[] }>(
+    PRODUCTS_BASE_URL
+  );
 
-  return { products, isLoading, error };
+  return {
+    products: data?.products ?? [],
+    isLoading,
+    error,
+  };
 };

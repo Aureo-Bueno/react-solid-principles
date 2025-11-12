@@ -1,25 +1,21 @@
-import { useEffect, useState } from "react";
 import { Category } from "../types/category";
-import axios from "axios";
 import { CATEGORIES_BASE_URL } from "../constants/endpoints";
+import { useFetch } from "./useFetch";
 
-export const useFetchCategories = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+type UseFetchCategoriesReturn = {
+  categories: Category[];
+  isLoading: boolean;
+  error: string | null;
+};
 
-  useEffect(() => {
-    axios
-      .get(CATEGORIES_BASE_URL)
-      .then((response) => {
-        setCategories(response.data.categories);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setError("Erro ao carregar categorias.");
-        setIsLoading(false);
-      });
-  }, []);
+export const useFetchCategories = (): UseFetchCategoriesReturn => {
+  const { data, isLoading, error } = useFetch<{ categories: Category[] }>(
+    CATEGORIES_BASE_URL
+  );
 
-  return { categories, isLoading, error };
+  return {
+    categories: data?.categories ?? [],
+    isLoading,
+    error,
+  };
 };

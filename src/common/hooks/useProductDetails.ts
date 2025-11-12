@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { Product } from "../types/product";
 import { PRODUCTS_BASE_URL } from "../constants/endpoints";
+import { useFetch } from "./useFetch";
 
 interface UseProductDetailsReturn {
   product: Product | null;
@@ -12,36 +11,29 @@ interface UseProductDetailsReturn {
 export const useProductDetails = (
   id: string | undefined
 ): UseProductDetailsReturn => {
-  const [product, setProduct] = useState<Product | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading: fetchLoading, error: fetchError } = useFetch<{
+    products: Product[];
+  }>(PRODUCTS_BASE_URL);
 
-  useEffect(() => {
-    if (!id) {
-      setError("ID do produto não fornecido.");
-      setIsLoading(false);
-      return;
-    }
+  if (!id) {
+    return { product: null, isLoading: false, error: "ID do produto não fornecido." };
+  }
 
-    axios
-      .get(PRODUCTS_BASE_URL)
-      .then((response) => {
-        const foundProduct = response.data.products.find(
-          (product: Product) => product.id.toString() === id
-        );
+  if (fetchLoading) {
+    return { product: null, isLoading: true, error: fetchError };
+  }
 
-        if (foundProduct) {
-          setProduct(foundProduct);
-        } else {
-          setError("Produto não encontrado.");
-        }
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setError("Erro ao carregar os detalhes do produto.");
-        setIsLoading(false);
-      });
-  }, [id]);
+  if (fetchError) {
+    return { product: null, isLoading: false, error: fetchError };
+  }
 
-  return { product, isLoading, error };
+  const foundProduct = data?.products.find(
+    (product) => product.id.toString() === id
+  ) ?? null;
+
+  if (!foundProduct) {
+    return { product: null, isLoading: false, error: "Produto não encontrado." };
+  }
+
+  return { product: foundProduct, isLoading: false, error: null };
 };
